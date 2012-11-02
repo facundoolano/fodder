@@ -1,0 +1,30 @@
+
+#top-bar {
+	padding-bottom: 40px;
+}
+
+#entry-container {
+	padding-top: 60px;	
+	padding-left: 20px;
+	padding-right: 40px;
+}
+
+#entry-container textarea {
+	resize: none;
+	width: 96%;
+}
+
+.inner-nav{
+	border-bottom: 1px solid #DDD;
+	margin-bottom: 20px;
+}
+
+.entry {
+	padding:0 10px 0 10px;
+	font-size: 12px;
+}
+
+.entry .toolbar {
+	padding-bottom: 10px;
+}
+
