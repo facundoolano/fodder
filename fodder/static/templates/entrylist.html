@@ -1,0 +1,13 @@
+{{#each entries}}
+<div class="entry">
+	<strong>{{ this.username }}</strong>
+	<p>{{ this.content }}</p>
+	<div class="toolbar">
+		<p class="pull-right">
+			<span class="muted">TODO TIME AGO</span><i class="icon-arrow-up"></i><i
+				class="icon-comment"></i>
+		</p>
+	</div>
+	<hr />
+</div>
+{{/each }}

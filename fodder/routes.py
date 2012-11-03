@@ -2,18 +2,23 @@ from flask import request
 from flask.templating import render_template
 from fodder.app import app
 from fodder.models import Entry, User
-import json
 from flask.helpers import jsonify
 
 
 @app.route('/')
 def home():
+    #FIXME remove flask templates all together, return regular static file
     return render_template('base.html')
 
 
+@app.route('/entries')
 def get_entries():
-    #TODO
-    pass
+    entries = []
+    for entry in Entry.select().order_by(Entry.creation_date.desc()):
+        entries.append({'username': entry.user.username,
+                        'content': entry.content})
+
+    return jsonify(success=True, entries=entries)
 
 
 @app.route('/new_entry', methods=['GET', 'POST'])

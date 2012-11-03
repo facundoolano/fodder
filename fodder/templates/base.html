@@ -56,43 +56,35 @@
 							</form>
 						</ul>
 					</div>
-					<div id="inner-container" class="row">
-						<div class="entry">
-							<strong>Facundo Olano</strong> 
-							<p>
-								Este es un texto relativamente largo donde uno explicaría cuestiones de la vida cotidiana o no.
-								Hay quien dice que los redondos son una banda de la hostia, yo particualrmente no coincido.
-							</p>
-							<div class="toolbar">
-								<p class="pull-right"><span class="muted">Hace 15 minutos</span><i class="icon-arrow-up"></i><i class="icon-comment"></i></p>
-							</div>
-							<hr/>
-						</div>
-						<div class="entry">
-							<strong>Facundo Olano</strong> 
-							<p>
-								Este es un texto relativamente largo donde uno explicaría cuestiones de la vida cotidiana o no.
-								Hay quien dice que los redondos son una banda de la hostia, yo particualrmente no coincido.
-							</p>
-							<div class="toolbar">
-								<p class="pull-right"><span class="muted">Hace 15 minutos</span><i class="icon-arrow-up"></i><i class="icon-comment"></i></p>
-							</div>
-							<hr/>
-						</div>
-					</div>
+					<div id="inner-container" class="row"></div>
 				</div>
 			</div>
 		</div>
 		<!-- scripts -->
 		<script src="/static/js/jquery-1.8.2.min.js"></script>
 		<script src="/static/js/bootstrap.min.js"></script>
+		<script src="/static/js/handlebars-1.0.rc.1.js"></script>
+		<script src="/static/js/template_utils.js"></script>
+		
+		
+		
 		<script type="text/javascript">
+			function get_entries(){
+				$.get('/entries', function(data){
+					replace_template('entrylist.html', data, '#inner-container');
+				}, 'json')
+			}
+		
 			$(function(){
 				$('#entry_form').submit(function(){
 					$.post('/new_entry', { entry: $('#entry_form textarea').val() }, 
-							'json', function(){ alert('todo piola'); })
+							/*FIXME should be updated to all.*/ get_entries, 'json')
 					return false;
-				});				
+				});
+				
+				get_entries();
+				
+				
 			})
 		</script>
 	</body>
