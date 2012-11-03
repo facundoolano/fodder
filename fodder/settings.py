@@ -1,9 +1,11 @@
 
 DATABASE = {
-    'name': 'example.db',
-    'engine': 'peewee.SqliteDatabase',
+    'name': 'fodder',
+    'engine': 'peewee.MySQLDatabase',
+    'user': 'admin',
+    'passwd': 'admin'
 }
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = 'ssshhhh'
