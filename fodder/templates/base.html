@@ -22,7 +22,6 @@
 			</div>
 		</div>
 		<div class="container-fluid">
-
 			<div class="row-fluid">
 				<div id="entry-container" class="span4">
 					<form id="entry_form">
@@ -65,27 +64,6 @@
 		<script src="/static/js/bootstrap.min.js"></script>
 		<script src="/static/js/handlebars-1.0.rc.1.js"></script>
 		<script src="/static/js/template_utils.js"></script>
-		
-		
-		
-		<script type="text/javascript">
-			function get_entries(){
-				$.get('/entries', function(data){
-					replace_template('entrylist.html', data, '#inner-container');
-				}, 'json')
-			}
-		
-			$(function(){
-				$('#entry_form').submit(function(){
-					$.post('/new_entry', { entry: $('#entry_form textarea').val() }, 
-							/*FIXME should be updated to all.*/ get_entries, 'json')
-					return false;
-				});
-				
-				get_entries();
-				
-				
-			})
-		</script>
+		<script src="/static/js/entry.js"></script>		
 	</body>
 </html>
