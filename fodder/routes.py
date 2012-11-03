@@ -3,6 +3,11 @@ from flask.templating import render_template
 from fodder.app import app
 from fodder.models import Entry, User
 from flask.helpers import jsonify
+from flask.wrappers import Response
+from redis import Redis
+import json
+
+red = Redis()
 
 
 @app.route('/')
@@ -14,14 +19,14 @@ def home():
 @app.route('/entries')
 def get_entries():
     entries = []
-    for entry in Entry.select().order_by(Entry.creation_date.desc()):
+    for entry in Entry.select().order_by(Entry.creation_date.desc()).limit(5):
         entries.append({'username': entry.user.username,
                         'content': entry.content})
 
     return jsonify(success=True, entries=entries)
 
 
-@app.route('/new_entry', methods=['GET', 'POST'])
+@app.route('/new_entry', methods=['POST'])
 def post_entry():
 
     #FIXME get from request
@@ -29,8 +34,28 @@ def post_entry():
     user.set_password('pepe')
     user.save()
 
-    if 'entry' in request.form:
-        Entry.create(content=request.form['entry'], user=user).save()
-        return jsonify(success=True)
-    else:
-        return jsonify(success=False), 500
+    entry = Entry.create(content=request.form['entry'], user=user)
+    entry.save()
+
+    message = json.dumps({'username': user.username,
+                          'content': entry.content})
+    red.publish('entry', message)
+
+    return jsonify(success=True)
+
+
+def event_stream():
+    pubsub = red.pubsub()
+    pubsub.subscribe('entry')
+    for message in pubsub.listen():
+        print message
+        if message['type'] == 'message':
+            yield 'data: %s\n\n' % message['data']
+
+
+@app.route('/entry_stream')
+def sse_request():
+    return Response(
+            event_stream(),
+            mimetype='text/event-stream')
+

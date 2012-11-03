@@ -13,14 +13,20 @@ function add_entry(data) {
 
 $(function() {
 	$('#entry_form').submit(function() {
-		$.post('/new_entry', {
-			entry : $('#entry_form textarea').val()
-		}, function(){
-			$('#entry_form textarea').val('');
-		}, 'json')
+		if($('#entry_form textarea').val()) {
+			$.post('/new_entry', {
+				entry : $('#entry_form textarea').val()
+			}, function(){
+				$('#entry_form textarea').val('');
+			}, 'json')
+		}
+		
 		return false;
 	});
 
 	get_entries();
+	
+	//listens to add new entries
+	sse_subscribe('entry', add_entry);
 
 });
