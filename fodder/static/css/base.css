@@ -1,21 +1,22 @@
 
 div.clear {
     clear:both;
+    overflow: hidden;
 }
 
 #top-bar {
 	padding-bottom: 40px;
 }
 
-#entry-container {
+#submit-container {
 	padding-top: 60px;	
 	padding-left: 20px;
 	padding-right: 40px;
 }
 
-#entry-container textarea {
+#submit-container textarea {
 	resize: none;
-	width: 96%;
+	width: 95%;
 }
 
 .inner-nav{
@@ -23,28 +24,33 @@ div.clear {
 	margin-bottom: 20px;
 }
 
-.entry-container {
-	width:100%
-}
 
-.entry-avatar {
-	width: 50px;
-	float:left;
-	height: 100px;
-}
-
-.entry-content{
-	width: 90%;
-	float:right;
-	word-wrap: break-word;
-}
-
+/*** Entries ***/
 .entry {
 	padding:0 10px 0 10px;
 	font-size: 12px;
+	margin-bottom: 10px;
 }
 
-.entry .toolbar {
-	padding-bottom: 10px;
+.entry-header {
+	margin-bottom: 5px;
+}
+
+.entry-avatar {
+	float: left; 
+	height: 100%; 
+	width: auto;
+	margin-right: 10px;
+}
+
+.entry-content{
+	word-wrap: break-word;
+}
+
+.entry-footer {
+	width: 100%;
+	border-bottom: 1px solid #EEE;
+	text-align: right;
+	
 }
 

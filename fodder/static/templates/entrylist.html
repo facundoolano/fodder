@@ -1,21 +1,20 @@
 {{#each entries}}
 <div class="entry">
-	<div class="entry-container">
+	<div class="entry-header">
 		<div class="entry-avatar">
 			<img src="{{ this.avatar }}" class="img-rounded">
 		</div>
-		<div class="entry-content">
-			<strong>{{ this.username }}</strong>
-			<p>{{ this.content }}</p>
+		<div class="entry-title">
+			<strong><a href="#">{{ this.username }}</a></strong>
+			<div class="muted">TODO TIME AGO</div>	
 		</div>
+		<div class="clear"></div>
 	</div>
-	<div class="clear"></div>
-	<div class="toolbar">
-		<p class="pull-right">
-			<span class="muted">TODO TIME AGO</span><i class="icon-arrow-up"></i><i
-				class="icon-comment"></i>
-		</p>
+	<div class="entry-content">
+		<p>{{ this.content }}</p>
 	</div>
-	<hr />
+	<div class="entry-footer">
+		<a href="#">5 votes - 10 Comments</a>
+	</div>
 </div>
 {{/each }}
