@@ -7,4 +7,4 @@ if __name__ == '__main__':
     Entry.create_table(fail_silently=True)
     Comment.create_table(fail_silently=True)
 
-#    app.run(threaded=True)
+    app.run(use_reloader=False)

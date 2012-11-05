@@ -11,7 +11,8 @@ function load_template(path, context, callback){
 	// get the template
 	$.ajax({
         url: '/static/templates/' + path,
-            cache: true,
+            cache: false, //true,
+            
             success: function(data) {
                 template = Handlebars.compile(data);
                 html = template(context)

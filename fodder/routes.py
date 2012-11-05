@@ -10,6 +10,13 @@ import json
 red = Redis()
 
 
+#TODO this might belong somewhere else
+def entry_as_dict(entry):
+    return {'username': entry.user.username,
+            'content': entry.content,
+            'avatar': entry.user.gravatar_url()}
+
+
 @app.route('/')
 def home():
     #FIXME remove flask templates all together, return regular static file
@@ -20,8 +27,7 @@ def home():
 def get_entries():
     entries = []
     for entry in Entry.select().order_by(Entry.creation_date.desc()).limit(5):
-        entries.append({'username': entry.user.username,
-                        'content': entry.content})
+        entries.append(entry_as_dict(entry))
 
     return jsonify(success=True, entries=entries)
 
@@ -37,8 +43,8 @@ def post_entry():
     entry = Entry.create(content=request.form['entry'], user=user)
     entry.save()
 
-    message = json.dumps({'username': user.username,
-                          'content': entry.content})
+    #publish the entry to the channel
+    message = json.dumps(entry_as_dict(entry))
     red.publish('entry', message)
 
     return jsonify(success=True)
@@ -58,4 +64,3 @@ def sse_request():
     return Response(
             event_stream(),
             mimetype='text/event-stream')
-

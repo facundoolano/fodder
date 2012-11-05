@@ -6,6 +6,6 @@ DATABASE = {
     'passwd': 'admin'
 }
 
-DEBUG = False
+DEBUG = True
 
 SECRET_KEY = 'ssshhhh'

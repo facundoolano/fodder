@@ -1,4 +1,8 @@
 
+div.clear {
+    clear:both;
+}
+
 #top-bar {
 	padding-bottom: 40px;
 }
@@ -17,6 +21,22 @@
 .inner-nav{
 	border-bottom: 1px solid #DDD;
 	margin-bottom: 20px;
+}
+
+.entry-container {
+	width:100%
+}
+
+.entry-avatar {
+	width: 50px;
+	float:left;
+	height: 100px;
+}
+
+.entry-content{
+	width: 90%;
+	float:right;
+	word-wrap: break-word;
 }
 
 .entry {

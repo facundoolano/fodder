@@ -14,7 +14,10 @@ function sse_subscribe(channel, message_handler){
 		var data = JSON.parse(e.data);
 		message_handler(data);
 	}, false);
-
+	
+	
+	//Needed?
+	
 	source.addEventListener('open', function(e) {
 		// Connection was opened.
 	}, false);
