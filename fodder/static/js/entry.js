@@ -1,13 +1,19 @@
 function get_entries() {
+	
 	$.get('/entries', function(data) {
-		replace_template('entrylist.html', data, '#inner-container');
+		load_template('entrylist.html', data, function(html){
+			$('#inner-container').html(html);
+			$("time.timeago").timeago();
+		});
 	}, 'json')
+	
 }
 
 function add_entry(data) {
 	var context = { entries : [data]};
 	load_template('entrylist.html', context, function(html){
 		$('#inner-container').prepend(html);
+		$("time.timeago").timeago();
 		});
 }
 

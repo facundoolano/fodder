@@ -14,7 +14,8 @@ red = Redis()
 def entry_as_dict(entry):
     return {'username': entry.user.username,
             'content': entry.content,
-            'avatar': entry.user.gravatar_url()}
+            'avatar': entry.user.gravatar_url(),
+            'date': entry.creation_date.isoformat()}
 
 
 @app.route('/')
