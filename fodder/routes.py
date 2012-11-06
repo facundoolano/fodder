@@ -34,7 +34,7 @@ def get_entries():
     page = int(request.args.get('page', 1))
     offset = page * paginate_by
 
-    for entry in models.get_entries(limit=paginate_by, offset):
+    for entry in models.get_entries(limit=paginate_by, offset=offset):
         entries.append(entry_as_dict(entry))
 
     return jsonify(success=True, entries=entries)
