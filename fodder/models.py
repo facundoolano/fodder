@@ -30,6 +30,12 @@ class Entry(db.Model):
     creation_date = DateTimeField(default=datetime.datetime.now)
 
 
+#TODO put some other place?
+def get_entries(limit, offset=0):
+    return Entry.select().order_by(Entry.creation_date.desc())\
+        .limit(limit).offset(offset)
+
+
 class Comment(db.Model):
     entry = ForeignKeyField(Entry)
     user = ForeignKeyField(User)

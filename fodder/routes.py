@@ -6,6 +6,7 @@ from flask.helpers import jsonify
 from flask.wrappers import Response
 from redis import Redis
 import json
+from fodder import models
 
 red = Redis()
 
@@ -27,7 +28,13 @@ def home():
 @app.route('/entries')
 def get_entries():
     entries = []
-    for entry in Entry.select().order_by(Entry.creation_date.desc()).limit(5):
+
+    #TODO think of a more general pagination approach
+    paginate_by = 5
+    page = int(request.args.get('page', 1))
+    offset = page * paginate_by
+
+    for entry in models.get_entries(limit=paginate_by, offset):
         entries.append(entry_as_dict(entry))
 
     return jsonify(success=True, entries=entries)
