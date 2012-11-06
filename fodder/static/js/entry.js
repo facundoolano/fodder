@@ -46,11 +46,9 @@ $(function() {
 		nextSelector : "div.navigation a:first",
 		// selector for the NEXT link (to page 2)
 
-		itemSelector : "#inner-container div.post",
+		itemSelector : "#inner-container",
 		// selector for all items you'll retrieve
-
-		debug : true
-
+		
 	}, function(data, opts) {
 		
 		if (data.entries.length === 0) {
@@ -67,8 +65,6 @@ $(function() {
 	$('#inner-container').infinitescroll('retrieve');
 	
 	
-	console.log($('div.navigation a:first'));
-
 	//listens to add new entries
 	//sse_subscribe('entry', add_entry);
 

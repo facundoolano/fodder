@@ -24,6 +24,10 @@ div.clear {
 	margin-bottom: 20px;
 }
 
+#infscr-loading {
+	text-align: center;
+}
+
 
 /*** Entries ***/
 .entry {
