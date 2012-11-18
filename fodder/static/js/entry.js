@@ -23,7 +23,7 @@ $(function() {
 
 	$('#entry_form').submit(function() {
 		if ($('#entry_form textarea').val()) {
-			$.post('/new_entry', {
+			$.post('/entries', {
 				entry : $('#entry_form textarea').val()
 			}, function() {
 				$('#entry_form textarea').val('');

@@ -29,6 +29,22 @@ class Entry(db.Model):
     user = ForeignKeyField(User)
     creation_date = DateTimeField(default=datetime.datetime.now)
 
+    def vote_count(self):
+        #TODO
+        return 0
+
+    def comment_count(self):
+        #TODO
+        return 0
+
+    def as_dict(self):
+        return {'username': self.user.username,
+                'content': self.content,
+                'avatar': self.user.gravatar_url(),
+                'date': self.creation_date.isoformat(),
+                'votes': self.vote_count(),
+                'comments': self.comment_count()}
+
 
 #TODO put some other place?
 def get_entries(limit, offset=0):
@@ -36,7 +52,25 @@ def get_entries(limit, offset=0):
         .limit(limit).offset(offset)
 
 
+def get_comments(entry_id):
+    return Comment.select().join(Entry).where(Entry.id == entry_id)\
+        .order_by(Comment.creation_date.desc())
+
+
 class Comment(db.Model):
+    entry = ForeignKeyField(Entry)
+    user = ForeignKeyField(User)
+    content = TextField()
+    creation_date = DateTimeField(default=datetime.datetime.now)
+
+    def as_dict(self):
+        return {'username': self.user.username,
+            'content': self.content,
+            'avatar': self.user.gravatar_url(),
+            'date': self.creation_date.isoformat()}
+
+
+class Vote(db.Model):
     entry = ForeignKeyField(Entry)
     user = ForeignKeyField(User)
     creation_date = DateTimeField(default=datetime.datetime.now)
