@@ -74,6 +74,6 @@ $(function() {
 	
 	
 	//listens to add new entries
-	sse_subscribe('entry', add_entry);
+	//sse_subscribe('entry', add_entry);
 
 }); 

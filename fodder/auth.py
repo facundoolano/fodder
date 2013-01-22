@@ -5,6 +5,8 @@ from fodder import models
 from peewee import DoesNotExist
 from flask import request
 
+#FIXME is this module useful?
+
 
 def login(username, password):
     """

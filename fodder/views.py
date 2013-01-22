@@ -80,46 +80,60 @@ app.add_url_rule('/entries/<int:entry_id>/comments/',
                  view_func=CommentView.as_view('comments'))
 
 
-#FIXME PUT to /users/<username
-@app.route('/users/', methods=['POST'])
-def users():
-    username = request.form['username']
-    email = request.form['email']
-    pass1 = request.form['password1']
-    pass2 = request.form['password2']
+class UserView(MethodView):
 
-    print "hola"
-
-    #TODO if email not email format
-    #error -> msg
-
-    if pass1 != pass2:
-        pass #TODO error -> msg
-
-    user = models.User(username=username, email=email)
-    user.set_password(pass1)
-    user.authenticate(pass1)
-    user.save()
-
-    resp = jsonify(success=True)
-    #FIXME not very restful
-    resp.set_cookie('session_key', user.session_key)
-    return resp
-
-
-@app.route('/users/<username>/', methods=['POST'])
-def login(username):
-    password = request.form['password']
-    user = auth.login(username, password)
-
-    if user:
-        resp = jsonify(success=True)
+    def _cookie_response(self, user=None):
         #FIXME not very restful
-        resp.set_cookie('session_key', user.session_key)
+
+        resp = jsonify(success=True)
+        if user:
+            resp.set_cookie('session_key', user.session_key)
+        else:
+            resp.delete_cookie('session_key')
         return resp
-    else:
-        #return error
-        pass
+
+    def put(self):
+        """ Creates a new user of the given username. """
+
+        username = request.form['username']
+        email = request.form['email']
+        pass1 = request.form['password1']
+        pass2 = request.form['password2']
+
+        print "hola"
+
+        #TODO check email format
+        #TODO check username not exists
+        #TODO check pass1 == pass2
+
+        user = models.User(username=username, email=email)
+        user.set_password(pass1)
+        user.authenticate(pass1)
+        user.save()
+
+        return self._cookie_response(user)
+
+    def post(self):
+        """ Logs the user in. """
+
+        password = request.form['password']
+        username = request.form['username']
+        user = auth.login(username, password)
+
+        if user:
+            return self._cookie_response(user)
+        else:
+            #return error
+            pass
+
+    def delete(self):
+        """ Logs the user out. """
+
+        auth.logout()
+        return self._cookie_response()
+
+app.add_url_rule('/users/', view_func=UserView.as_view('users'),
+                 methods=['PUT', 'POST', 'DELETE'])
 
 
 @app.route('/entries/<int:entry_id>/votes/', methods=['POST'])
