@@ -12,14 +12,16 @@
 		<div id="top-bar" class="navbar navbar-static-top">
 			<div class="navbar-inner">
 				<a class="brand" href="#">fodder</a>
-				<ul class="nav pull-right">
+				<script id="userbar-template" type="text/x-handlebars-template">
+				<ul id="userbar" class="nav pull-right">
 					<li>
-						<a href="#"><i class="icon-user "></i> Facundo Olano</a>
+						<a href="#"><i class="icon-user "></i> {% raw %}{{username}}{% endraw %}</a>
 					</li>
 					<li>
 						<a href="javascript:logout()">Logout</a>
 					</li>
 				</ul>
+				</script>
 			</div>
 		</div>
 		<div class="container">
@@ -59,6 +61,7 @@
 		<script src="/static/js/lib/jquery.infinitescroll.min.js"></script>		
 		<script src="/static/js/utils/templates.js"></script>
 		<script src="/static/js/utils/sse.js"></script>
+		<script src="/static/js/utils/cookies.js"></script>
 		<script src="/static/js/user.js"></script>
 		<script src="/static/js/entry.js"></script>
 	</body>

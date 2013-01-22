@@ -73,13 +73,15 @@ app.add_url_rule('/entries/<int:entry_id>/comments/',
 class UserView(MethodView):
 
     def _cookie_response(self, user=None):
-        #FIXME not very restful
+        #FIXME not very restful and cookies are ugly
 
         resp = jsonify(success=True)
         if user:
             resp.set_cookie('session_key', user.session_key)
+            resp.set_cookie('username', user.username)
         else:
             resp.delete_cookie('session_key')
+            resp.delete_cookie('username')
         return resp
 
     def put(self):

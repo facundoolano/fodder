@@ -33,4 +33,16 @@ function replace_template(path, context, container_id) {
 	});
 }
 
-/*** Handlebars.js Helper functions ***/ 
+/**
+ * Gets a template script in the document, evaluates it with the given context
+ * and places it in the same position as the script. 
+ */
+function inline_template(template_id, context) {
+	var source   = $(template_id).html();
+	console.log(source);
+	var template = Handlebars.compile(source);
+	console.log(context);
+	var html    = template(context);
+	console.log(html);
+	$(html).insertBefore(template_id);
+} 

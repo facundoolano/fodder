@@ -39,7 +39,7 @@ function show_entryform(){
 $(function() {
 	
 	if (is_logged_in()){
-		show_entryform();
+		login();
 	}
 	
 	get_entries();

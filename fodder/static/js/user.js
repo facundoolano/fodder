@@ -11,7 +11,7 @@ function show_registerform(){
 			$.ajax({
 				type: 'PUT',
 				url: url, 
-				success: show_entryform,
+				success: login,
 				data : {
 					username: $('#username').val(),
 					email: $('#email').val(),
@@ -36,7 +36,7 @@ function show_loginform() {
 			$.ajax({
 				type: 'POST',
 				url: url, 
-				success: show_entryform,
+				success: login,
 				data : {
 					username: $('#username').val(),
 					password: $('#password').val()
@@ -53,13 +53,23 @@ function is_logged_in(){
 	return document.cookie.indexOf("session_key") >= 0;
 }
 
+
+
+function login() {
+	show_entryform();
+	inline_template('#userbar-template', {username: getCookie('username')})
+}
+
 function logout(){
 	console.log('call logout');
 	var url = '/users/'; 
 	$.ajax({
 		type: 'DELETE',
 		url: url, 
-		success: show_loginform,
+		success: function() {
+			show_loginform();
+			$('#userbar').remove();
+		},
 		dataType: 'json'
 	})
 }
