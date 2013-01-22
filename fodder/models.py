@@ -5,7 +5,7 @@ from flask_peewee.db import Database
 from peewee import *
 
 from fodder.app import app
-from md5 import md5
+import md5
 
 db = Database(app)
 auth = Auth(app, db)
@@ -18,6 +18,24 @@ class User(db.Model, BaseUser):
     join_date = DateTimeField(default=datetime.datetime.now)
     active = BooleanField(default=True)
     admin = BooleanField(default=False)
+    session_key = CharField(null=True)
+
+    def set_password(self, password):
+        self.password = md5.md5(password).hexdigest()
+
+    def authenticate(self, password):
+        """
+        If the password is valid, cretes a new session key and returns True.
+        Otherwise returns False.
+        """
+
+        if md5.md5(password).hexdigest() == self.password:
+            self.session_key = md5.md5(self.username + password +
+                                   str(datetime.datetime.now())).hexdigest()
+            self.save()
+            return True
+        else:
+            return False
 
     def gravatar_url(self, size=40):
         return 'http://www.gravatar.com/avatar/%s?d=identicon&s=%d' % \

@@ -1,39 +1,55 @@
 '''
 Functions for managing user authentication and sessions in a RESTful way.
 '''
-
-#Server-side sessions. (The user authenticates and receives a session key -
-#their user information is stored in the session backend on the server,
-#attached to that key Once they have a session they can make requests passing
-#their session key back to you (either in the URL or in a cookie) and the
-#information they have access to is returned to them.)
+from fodder import models
+from peewee import DoesNotExist
+from flask import request
 
 
-def login():
+def login(username, password):
     """
     Takes the user credentials, and if they are correct, creates a
-    session and returns a session id.
+    session key and returns the user.
     """
+    try:
+        user = models.User.get(models.User.username == username)
+        if user.authenticate(password):
+            return user
 
-    #TODO
-    pass
+    except DoesNotExist:
+        pass
+
+    return None
 
 
 def logout():
     """ Deletes the user session. """
 
-    #TODO
-    pass
+    key = request.cookies.get('session_key')
+    if key:
+        try:
+            user = models.User.get(models.User.session_key == key)
+            user.session_key = None
+            user.save()
+
+        except DoesNotExist:
+            pass
 
 
 def get_user():
     """
-    Returns the user for the given session id, or None if invalid or not
+    Returns the user for the given session key, or None if invalid or not
     logged in.
     """
 
-    #TODO
-    pass
+    key = request.cookies.get('session_key')
+    if key:
+        try:
+            return models.User.get(models.User.session_key == key)
+        except DoesNotExist:
+            pass
+
+    return None
 
 
 def login_required():

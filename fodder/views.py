@@ -5,7 +5,7 @@ from flask.wrappers import Response
 from redis import Redis
 import json
 from fodder.app import app
-from fodder import models
+from fodder import models, auth
 from flask.views import MethodView
 
 red = Redis()
@@ -78,6 +78,48 @@ class CommentView(MethodView):
 
 app.add_url_rule('/entries/<int:entry_id>/comments/',
                  view_func=CommentView.as_view('comments'))
+
+
+#FIXME PUT to /users/<username
+@app.route('/users/', methods=['POST'])
+def users():
+    username = request.form['username']
+    email = request.form['email']
+    pass1 = request.form['password1']
+    pass2 = request.form['password2']
+
+    print "hola"
+
+    #TODO if email not email format
+    #error -> msg
+
+    if pass1 != pass2:
+        pass #TODO error -> msg
+
+    user = models.User(username=username, email=email)
+    user.set_password(pass1)
+    user.authenticate(pass1)
+    user.save()
+
+    resp = jsonify(success=True)
+    #FIXME not very restful
+    resp.set_cookie('session_key', user.session_key)
+    return resp
+
+
+@app.route('/users/<username>/', methods=['POST'])
+def login(username):
+    password = request.form['password']
+    user = auth.login(username, password)
+
+    if user:
+        resp = jsonify(success=True)
+        #FIXME not very restful
+        resp.set_cookie('session_key', user.session_key)
+        return resp
+    else:
+        #return error
+        pass
 
 
 @app.route('/entries/<int:entry_id>/votes/', methods=['POST'])

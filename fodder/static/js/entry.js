@@ -37,7 +37,9 @@ function show_entryform(){
 
 $(function() {
 	
-	//TODO if logged in show form
+	if (is_logged_in()){
+		show_entryform();
+	}
 	
 	get_entries();
 	
