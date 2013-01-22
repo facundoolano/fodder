@@ -39,7 +39,8 @@ class User(db.Model, BaseUser):
 
     def gravatar_url(self, size=40):
         return 'http://www.gravatar.com/avatar/%s?d=identicon&s=%d' % \
-            (md5(self.email.strip().lower().encode('utf-8')).hexdigest(), size)
+            (md5.md5(self.email.strip().lower().encode('utf-8')).hexdigest(),
+             size)
 
 
 class Entry(db.Model):

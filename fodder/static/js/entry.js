@@ -20,19 +20,20 @@ function add_entry(data) {
 }
 
 function show_entryform(){
-	replace_template('entryform.html', {}, '#submit-container');
+	load_template('entryform.html', {}, function(html){
+		$('#submit-container').html(html);
+		$('#entry_form').submit(function() {
+			if ($('#entry_form textarea').val()) {
+				$.post('/entries/', {
+					entry : $('#entry_form textarea').val()
+				}, function() {
+					$('#entry_form textarea').val('');
+				}, 'json')
+			}
 	
-	$('#entry_form').submit(function() {
-		if ($('#entry_form textarea').val()) {
-			$.post('/entries/', {
-				entry : $('#entry_form textarea').val()
-			}, function() {
-				$('#entry_form textarea').val('');
-			}, 'json')
-		}
-
-		return false;
-	});	
+			return false;
+		});	
+	});
 }
 
 $(function() {
@@ -74,6 +75,6 @@ $(function() {
 	
 	
 	//listens to add new entries
-	//sse_subscribe('entry', add_entry);
+	sse_subscribe('entry', add_entry);
 
 }); 

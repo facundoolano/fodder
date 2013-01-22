@@ -11,16 +11,6 @@ from flask.views import MethodView
 red = Redis()
 
 
-def get_user():
-    #FIXME get from request
-    user = models.User.get_or_create(username='Facundo',
-                                     email='facundo@fodder.com')
-    user.set_password('pepe')
-    user.save()
-
-    return user
-
-
 @app.route('/')
 def home():
     #FIXME remove flask templates all together, return regular static file
@@ -33,7 +23,7 @@ class EntryView(MethodView):
         #TODO think of a more general pagination approach
         paginate_by = 5
         page = int(request.args.get('page', 1))
-        offset = page * paginate_by
+        offset = (page - 1) * paginate_by
 
         entries = [e.as_dict() for e in
                    models.get_entries(limit=paginate_by, offset=offset)]
@@ -42,7 +32,7 @@ class EntryView(MethodView):
 
     def post(self):
 
-        user = get_user()
+        user = auth.get_user()
 
         entry = models.Entry.create(content=request.form['entry'], user=user)
         entry.save()
