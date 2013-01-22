@@ -1,6 +1,9 @@
 from fodder.models import User, Entry, Comment, Vote
 from fodder.app import app
-from fodder.routes import *
+from fodder.views import *
+
+
+#gunicorn -w 4 fodder.main:app -b 127.0.0.1:4000
 
 if __name__ == '__main__':
     User.create_table(fail_silently=True)

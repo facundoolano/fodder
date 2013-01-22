@@ -1,6 +1,6 @@
 function get_entries() {
 
-	$.get('/entries', function(data) {
+	$.get('/entries/', function(data) {
 		load_template('entrylist.html', data, function(html) {
 			$('#inner-container').html(html);
 			$("time.timeago").timeago();
@@ -19,11 +19,12 @@ function add_entry(data) {
 	});
 }
 
-$(function() {
-
+function show_entryform(){
+	replace_template('entryform.html', {}, '#submit-container');
+	
 	$('#entry_form').submit(function() {
 		if ($('#entry_form textarea').val()) {
-			$.post('/entries', {
+			$.post('/entries/', {
 				entry : $('#entry_form textarea').val()
 			}, function() {
 				$('#entry_form textarea').val('');
@@ -31,8 +32,13 @@ $(function() {
 		}
 
 		return false;
-	});
+	});	
+}
 
+$(function() {
+	
+	//TODO if logged in show form
+	
 	get_entries();
 	
 	//build entry list with infinite scroll
@@ -66,6 +72,6 @@ $(function() {
 	
 	
 	//listens to add new entries
-	//sse_subscribe('entry', add_entry);
+	sse_subscribe('entry', add_entry);
 
 }); 
